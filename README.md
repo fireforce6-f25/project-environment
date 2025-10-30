@@ -1,7 +1,7 @@
-# Sierra Method
+# Project Environment
 
-[![Build Status](https://github.com/fireforce6/project-environment/actions/workflows/ci.yml/badge.svg)](https://github.com/fireforce6/project-environment/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/fireforce6/project-environment?label=Release)](https://github.com/fireforce6/project-environment/releases/latest)
+[![Build Status](https://github.com/fireforce6-f25/project-environment/actions/workflows/ci.yml/badge.svg)](https://github.com/fireforce6-f25/project-environment/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/fireforce6-f25/project-environment?label=Release)](https://github.com/fireforce6-f25/project-environment/releases/latest)
 
 
 An [OML](https://github.com/opencaesar/oml)-based description for modeling and analyzing the Project Environment project.
