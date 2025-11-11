@@ -7,5 +7,9 @@ description bundle <https://fireforce6.github.io/project-environment/bundle#> as
 
      // All descriptions included in this bundle
      includes <https://fireforce6.github.io/project-environment/description1#>
+     includes <https://fireforce6.github.io/project-environment/stakeholders#>
+     includes <https://fireforce6.github.io/project-environment/requirements#>
+     includes <https://fireforce6.github.io/project-environment/missions#>
+     includes <https://fireforce6.github.io/project-environment/capabilities#>
 
 }

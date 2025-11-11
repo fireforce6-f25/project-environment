@@ -1,0 +1,19 @@
+@dc:title "Dashboard Missions"
+@dc:description "Describes the missions for the Project Management Dashboard system."
+description <https://fireforce6.github.io/project-environment/missions#> as missions {
+
+	uses <http://purl.org/dc/elements/1.1/> as dc
+	uses <https://fireforce6.github.io/sierra/base#> as base
+	uses <https://fireforce6.github.io/sierra/capability#> as capability
+
+	// Mission M1: "At a glance" Overview
+	instance m1-at-a-glance-overview : capability:Mission [
+		base:description "At a glance Overview: Needs clear visuals, displaying project connections and dependencies across the entire organization."
+	]
+
+	// Mission M2: Easy Integration
+	instance m2-easy-integration : capability:Mission [
+		base:description "Easy Integration: Needs the ability to access files in subproject repositories without complex setup or manual configuration."
+	]
+
+}

@@ -2,7 +2,7 @@
 project:
    title: Project Environment
    description: This is the project-environment project
-   group: io.github.fireforce6
+   group: io.github.fireforce6-f25
    version: 0.1.0
 
 # Maven repositories
