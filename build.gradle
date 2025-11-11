@@ -47,7 +47,7 @@ oml.dataset.name = dataset_name
 repositories {
 	mavenLocal()
 	maven {
-		url = uri('https://maven.pkg.github.com/fireforce6/sierra-method')
+		url = uri('https://maven.pkg.github.com/fireforce6-f25/sierra-method')
 		credentials {
 			username = project.findProperty('githubUsername') ?: System.getenv('GITHUB_ACTOR')
 			password = project.findProperty('githubToken') ?: System.getenv('GITHUB_TOKEN')
@@ -254,7 +254,7 @@ publishing {
 	repositories {
 		maven {
 			name = 'githubPackages'
-			url = uri("https://maven.pkg.github.com/fireforce6/" + rootProject.name)
+			url = uri("https://maven.pkg.github.com/fireforce6-f25/" + rootProject.name)
 			credentials {
 				username = project.findProperty('githubUsername') ?: System.getenv('GITHUB_ACTOR')
 				password = project.findProperty('githubToken') ?: System.getenv('GITHUB_TOKEN')
