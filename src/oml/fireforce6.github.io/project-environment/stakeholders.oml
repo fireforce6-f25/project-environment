@@ -1,0 +1,19 @@
+@dc:title "Dashboard Stakeholders"
+@dc:description "Describes the stakeholders for the Project Management Dashboard system."
+description <https://fireforce6.github.io/project-environment/stakeholders#> as stakeholders {
+
+	uses <http://purl.org/dc/elements/1.1/> as dc
+	uses <https://fireforce6.github.io/sierra/base#> as base
+	uses <https://fireforce6.github.io/sierra/requirement#> as requirement
+
+	// Stakeholder: Developer
+	instance developer : requirement:Stakeholder [
+		base:description "Developers working in each subproject who need an overview of the dependencies and versions across the fireforce project."
+	]
+
+	// Stakeholder: Project Manager
+	instance project-manager : requirement:Stakeholder [
+		base:description "Project manager who oversees all subprojects and needs a high-level view of the entire system's dependency graph."
+	]
+
+}

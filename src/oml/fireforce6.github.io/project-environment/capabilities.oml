@@ -1,0 +1,42 @@
+@dc:title "Dashboard Capabilities"
+@dc:description "Describes the capabilities for the Project Management Dashboard system."
+description <https://fireforce6.github.io/project-environment/capabilities#> as capabilities {
+
+	uses <http://purl.org/dc/elements/1.1/> as dc
+	uses <https://fireforce6.github.io/sierra/base#> as base
+	uses <https://fireforce6.github.io/sierra/capability#> as capability
+  extends <https://fireforce6.github.io/project-environment/requirements#> as requirements 
+  extends <https://fireforce6.github.io/project-environment/missions#> as missions
+
+	// Capability C1: Authorization
+	instance c1-authorization : capability:Capability [
+		base:description "Authorization: Server should gain authorization from GitHub App to access repository data."
+		capability:isDerivedFrom requirements:r2-file-compatibility
+	]
+
+	// Capability C2: Fetch Capability
+	instance c2-fetch-capability : capability:Capability [
+		base:description "Fetch Capability: Server should be able to fetch from each of the subproject repositories to grab their current version and dependencies."
+		capability:isDerivedFrom requirements:r2-file-compatibility
+		capability:isDerivedFrom requirements:r3-up-to-date
+		capability:requires c1-authorization
+	]
+
+	// Capability C3: Dashboard Display
+	instance c3-dashboard-display : capability:Capability [
+		base:description "Dashboard Display: Dashboard should be able to take fetched dependencies and display them in a graph format."
+		capability:isDerivedFrom requirements:r1-visual-overview
+		capability:requires c2-fetch-capability
+	]
+
+	// Relationship: Missions aggregate Capabilities
+	// ref instance missions:m1-at-a-glance-overview [
+	// 	base:aggregates c3-dashboard-display
+	// ]
+
+	// ref instance missions:m2-easy-integration [
+	// 	base:aggregates c1-authorization
+	// 	base:aggregates c2-fetch-capability
+	// ]
+
+}

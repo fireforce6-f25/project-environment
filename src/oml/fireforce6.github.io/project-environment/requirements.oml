@@ -1,0 +1,33 @@
+@dc:title "Dashboard Requirements"
+@dc:description "Describes the requirements for the Project Management Dashboard system."
+description <https://fireforce6.github.io/project-environment/requirements#> as requirements {
+
+	uses <http://purl.org/dc/elements/1.1/> as dc
+	uses <https://fireforce6.github.io/sierra/base#> as base
+	uses <https://fireforce6.github.io/sierra/requirement#> as requirement
+  extends <https://fireforce6.github.io/project-environment/stakeholders#> as stakeholders
+
+	// Requirement R1: Visual overview of dependencies and releases
+	instance r1-visual-overview : requirement:Requirement [
+		base:description "The dashboard must provide a visual overview of the dependencies and current releases for each sub-project."
+		base:expression "Dashboard SHALL display dependencies and current release versions for all sub-projects in a visual graph format."
+		requirement:isExpressedBy stakeholders:developer
+		requirement:isExpressedBy stakeholders:project-manager
+	]
+
+	// Requirement R2: Compatibility with dependency specification files
+	instance r2-file-compatibility : requirement:Requirement [
+		base:description "The dashboard must be compatible with dependency specification files in each subproject's repository."
+		base:expression "Dashboard SHALL parse and interpret dependency specification files (e.g., package.json, requirements.txt, build.gradle) from each subproject repository."
+		requirement:isExpressedBy stakeholders:developer
+	]
+
+	// Requirement R3: Up-to-date versions and dependencies
+	instance r3-up-to-date : requirement:Requirement [
+		base:description "The dashboard must have up-to-date versions and dependencies displayed in its graph."
+		base:expression "Dashboard SHALL reflect the current state of dependencies and versions within a reasonable time after changes are committed to subproject repositories."
+		requirement:isExpressedBy stakeholders:developer
+		requirement:isExpressedBy stakeholders:project-manager
+	]
+
+}
