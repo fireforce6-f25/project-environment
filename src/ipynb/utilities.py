@@ -1,3 +1,6 @@
+### THIS FILE IS FROM THE KEPLER EXAMPLE ###
+### https://github.com/opencaesar/kepler16b-example/blob/main/src/ipynb/utilities.py ###
+
 import json
 import pandas as pd
 from plantuml import PlantUML
