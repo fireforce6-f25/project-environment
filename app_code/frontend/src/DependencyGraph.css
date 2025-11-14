@@ -24,6 +24,7 @@
   margin: 0 0 10px 0;
   font-size: 14px;
   font-weight: 600;
+  color: black;
 }
 
 .legend-item {
@@ -31,6 +32,7 @@
   align-items: center;
   margin: 5px 0;
   font-size: 12px;
+  color: black;
 }
 
 .legend-color {

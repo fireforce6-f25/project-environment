@@ -65,11 +65,11 @@ const DependencyGraph = () => {
     const simulation = d3.forceSimulation(data.nodes)
       .force('link', d3.forceLink(data.links)
         .id(d => d.id)
-        .distance(100))
-      .force('charge', d3.forceManyBody().strength(-150))
+        .distance(150))
+      .force('charge', d3.forceManyBody().strength(-250))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius(50))
-      .force('radial', d3.forceRadial(150, width / 2, height / 2).strength(0.3));
+      .force('collision', d3.forceCollide().radius(60))
+      .force('radial', d3.forceRadial(200, width / 2, height / 2).strength(0.3));
 
     // Create arrow markers for directed edges
     svg.append('defs').selectAll('marker')
