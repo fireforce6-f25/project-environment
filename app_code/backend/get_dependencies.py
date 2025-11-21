@@ -79,6 +79,25 @@ def fetch_repo_version(owner, repo, install_token):
 
     return "unversioned"
 
+def get_github_credentials():
+    """Load and return GitHub credentials."""
+    load_dotenv()
+    pem = os.getenv("PEM")
+    client_id = os.getenv("CLIENT_ID")
+    installation_id = os.getenv("INSTALLATION_ID")
+    return pem, client_id, installation_id
+
+
+def get_repos():
+    """Return list of class repos."""
+    return ["project-environment",
+            "fire-warden",
+            "mission-control",
+            "modeling-environment",
+            "copilot-environment",
+            "fire-cloud"]
+
+
 def get_all_dependencies():
     """
     Fetches dependencies for all repos and returns structured data.
@@ -86,19 +105,8 @@ def get_all_dependencies():
     - repo names as keys
     - values containing: repo version, dependencies dict (name -> required version)
     """
-    load_dotenv()
-
-    pem = os.getenv("PEM")
-    client_id = os.getenv("CLIENT_ID")
-    installation_id = os.getenv("INSTALLATION_ID")
-
-    # Define class wide repos
-    repos = ["project-environment",
-             "fire-warden",
-             "mission-control",
-             "modeling-environment",
-             "copilot-environment",
-             "fire-cloud"]
+    pem, client_id, installation_id = get_github_credentials()
+    repos = get_repos()
 
     jwt_token = generate_jwt(pem, client_id)
     install_token = generate_installation_token(installation_id, jwt_token)
@@ -120,6 +128,44 @@ def get_all_dependencies():
         result[repo] = {
             'version': repo_version,
             'dependencies': dependencies
+        }
+
+    return result
+
+
+def get_all_hours():
+    """
+    Fetches hours worked for all repos from their .settings.yaml files.
+    Returns a dictionary with repo names as keys and total hours as values.
+
+    Expected .settings.yaml format:
+    hours:
+      11/21/25: 1
+      11/22/25: 2.5
+    """
+    pem, client_id, installation_id = get_github_credentials()
+    repos = get_repos()
+
+    jwt_token = generate_jwt(pem, client_id)
+    install_token = generate_installation_token(installation_id, jwt_token)
+
+    result = {}
+    for repo in repos:
+        settings = fetch_dependencies("fireforce6-f25", repo, install_token)
+        hours_data = settings.get('hours', {}) if isinstance(settings, dict) else {}
+
+        # Sum up all hours from the dictionary
+        total_hours = 0
+        if isinstance(hours_data, dict):
+            for date, hours in hours_data.items():
+                try:
+                    total_hours += float(hours)
+                except (ValueError, TypeError):
+                    pass  # Skip invalid hour entries
+
+        result[repo] = {
+            'total_hours': total_hours,
+            'hours_breakdown': hours_data
         }
 
     return result

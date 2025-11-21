@@ -42,6 +42,17 @@
   margin-right: 8px;
 }
 
+.legend-arrows {
+  top: 210px;
+}
+
+.legend-arrow {
+  width: 30px;
+  height: 4px;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
 svg {
   border: 1px solid #ddd;
   background-color: white;
@@ -62,7 +73,7 @@ svg {
 }
 
 .node circle:hover {
-  r: 40;
+  r: 60;
   stroke-width: 3px;
 }
 

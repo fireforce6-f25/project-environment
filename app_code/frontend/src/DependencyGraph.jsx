@@ -61,38 +61,49 @@ const DependencyGraph = () => {
       centerNode.fy = height / 2;
     }
 
-    // Create force simulation with tighter spacing
+    // Create force simulation with spacing for larger nodes
     const simulation = d3.forceSimulation(data.nodes)
       .force('link', d3.forceLink(data.links)
         .id(d => d.id)
-        .distance(150))
-      .force('charge', d3.forceManyBody().strength(-250))
+        .distance(180))
+      .force('charge', d3.forceManyBody().strength(-400))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide().radius(60))
-      .force('radial', d3.forceRadial(200, width / 2, height / 2).strength(0.3));
+      .force('collision', d3.forceCollide().radius(80))
+      .force('radial', d3.forceRadial(250, width / 2, height / 2).strength(0.3));
 
-    // Create arrow markers for directed edges
-    svg.append('defs').selectAll('marker')
-      .data(['arrow'])
-      .enter().append('marker')
-      .attr('id', 'arrow')
-      .attr('viewBox', '0 -5 10 10')
-      .attr('refX', 40)
-      .attr('refY', 0)
-      .attr('markerWidth', 6)
-      .attr('markerHeight', 6)
-      .attr('orient', 'auto')
-      .append('path')
-      .attr('d', 'M0,-5L10,0L0,5')
-      .attr('fill', '#999');
+    // Define colors for version compatibility
+    const edgeColors = {
+      green: '#4CAF50',
+      yellow: '#FFC107',
+      red: '#F44336',
+      gray: '#9E9E9E'
+    };
 
-    // Create links
+    // Create arrow markers for each color
+    const defs = svg.append('defs');
+    Object.entries(edgeColors).forEach(([colorName, colorValue]) => {
+      defs.append('marker')
+        .attr('id', `arrow-${colorName}`)
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', 60)
+        .attr('refY', 0)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+        .append('path')
+        .attr('d', 'M0,-5L10,0L0,5')
+        .attr('fill', colorValue);
+    });
+
+    // Create links with color based on version compatibility
     const link = g.append('g')
       .selectAll('line')
       .data(data.links)
       .enter().append('line')
       .attr('class', 'link')
-      .attr('marker-end', 'url(#arrow)');
+      .attr('stroke', d => edgeColors[d.color] || edgeColors.gray)
+      .attr('stroke-width', 2)
+      .attr('marker-end', d => `url(#arrow-${d.color || 'gray'})`);
 
     // Create link labels for dependency versions
     const linkLabel = g.append('g')
@@ -114,9 +125,9 @@ const DependencyGraph = () => {
       .enter().append('g')
       .attr('class', 'node');
 
-    // Add circles to nodes
+    // Add circles to nodes (larger to fit name + version)
     node.append('circle')
-      .attr('r', 35)
+      .attr('r', 55)
       .attr('fill', d => {
         // Color nodes based on whether they have dependencies
         const hasOutgoing = data.links.some(l => l.source.id === d.id || l.source === d.id);
@@ -127,25 +138,28 @@ const DependencyGraph = () => {
         return '#9E9E9E';
       });
 
-    // Add version text inside circles
+    // Add repo name inside the node
     node.append('text')
-      .text(d => d.version || 'unversioned')
+      .text(d => d.name)
       .attr('x', 0)
-      .attr('y', 5)
+      .attr('y', -3)
       .attr('text-anchor', 'middle')
-      .attr('class', 'node-version')
-      .style('font-size', '11px')
+      .attr('class', 'node-name')
+      .style('font-size', '10px')
       .style('fill', 'white')
       .style('font-weight', 'bold')
       .style('pointer-events', 'none');
 
-    // Add repo name labels below nodes
+    // Add version as subtitle below the name
     node.append('text')
-      .text(d => d.name)
+      .text(d => d.version || 'unversioned')
       .attr('x', 0)
-      .attr('y', 35)
+      .attr('y', 10)
       .attr('text-anchor', 'middle')
-      .attr('class', 'node-label');
+      .attr('class', 'node-version')
+      .style('font-size', '9px')
+      .style('fill', 'rgba(255,255,255,0.8)')
+      .style('pointer-events', 'none');
 
     // Add title for hover
     node.append('title')
@@ -197,7 +211,7 @@ const DependencyGraph = () => {
   return (
     <div className="graph-container">
       <div className="legend">
-        <h3>Legend</h3>
+        <h3>Nodes</h3>
         <div className="legend-item">
           <div className="legend-color" style={{backgroundColor: '#2196F3'}}></div>
           <span>Has dependencies only</span>
@@ -213,6 +227,25 @@ const DependencyGraph = () => {
         <div className="legend-item">
           <div className="legend-color" style={{backgroundColor: '#9E9E9E'}}></div>
           <span>No connections</span>
+        </div>
+      </div>
+      <div className="legend legend-arrows">
+        <h3>Version Compatibility</h3>
+        <div className="legend-item">
+          <div className="legend-arrow" style={{backgroundColor: '#4CAF50'}}></div>
+          <span>Exact match</span>
+        </div>
+        <div className="legend-item">
+          <div className="legend-arrow" style={{backgroundColor: '#FFC107'}}></div>
+          <span>Minor/patch mismatch</span>
+        </div>
+        <div className="legend-item">
+          <div className="legend-arrow" style={{backgroundColor: '#F44336'}}></div>
+          <span>Major version mismatch</span>
+        </div>
+        <div className="legend-item">
+          <div className="legend-arrow" style={{backgroundColor: '#9E9E9E'}}></div>
+          <span>Unknown version</span>
         </div>
       </div>
       <svg ref={svgRef}></svg>
