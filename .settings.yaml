@@ -1,3 +1,9 @@
 dependencies:
-  - foo
-  - bar
+  mission-control: "0.0.0"
+  copilot-environment: "0.0.0"
+  fire-warden: "0.0.0"
+  modeling-environment: "0.0.0"
+  fire-cloud: "0.0.0"
+
+hours:
+  11/21/25: 1

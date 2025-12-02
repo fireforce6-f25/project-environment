@@ -9,8 +9,9 @@ build
 .fuseki
 
 # app_code files
-app_code/*venv
+app_code/*/venv
 app_code/.env
+.venv
 
 # ipynb files
 src/ipynb/.ipynb_checkpoints/

@@ -3,3 +3,5 @@ requests
 PyYAML
 python-dotenv
 cryptography
+Flask
+flask-cors
