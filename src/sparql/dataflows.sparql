@@ -1,0 +1,23 @@
+PREFIX base: <https://fireforce6.github.io/sierra/base#>
+PREFIX process: <https://fireforce6.github.io/sierra/process#>
+
+SELECT DISTINCT ?dataflow ?dataflow_desc ?process ?from_activity ?to_activity ?data ?data_desc
+WHERE {
+    ?dataflow a process:DataFlow ;
+              base:description ?dataflow_desc ;
+              process:isIncludedIn ?process .
+    
+    OPTIONAL {
+        ?from_activity process:flowsTo ?dataflow .
+    }
+    
+    OPTIONAL {
+        ?dataflow process:flowsTo ?to_activity .
+    }
+    
+    OPTIONAL {
+        ?dataflow process:carries ?data .
+        ?data base:description ?data_desc .
+    }
+}
+ORDER BY ?process ?dataflow

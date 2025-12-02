@@ -1,0 +1,25 @@
+PREFIX base: <https://fireforce6.github.io/sierra/base#>
+PREFIX process: <https://fireforce6.github.io/sierra/process#>
+PREFIX capability: <https://fireforce6.github.io/sierra/capability#>
+PREFIX entity: <https://fireforce6.github.io/sierra/entity#>
+
+SELECT DISTINCT ?process ?process_desc ?capability ?activity ?activity_desc ?allocated_entity
+WHERE {
+    ?process a process:Process ;
+             base:description ?process_desc .
+    
+    OPTIONAL {
+        ?process process:describes ?capability .
+    }
+    
+    OPTIONAL {
+        ?dataflow process:isIncludedIn ?process .
+        ?activity process:flowsFrom ?dataflow .
+        ?activity base:description ?activity_desc .
+        
+        OPTIONAL {
+            ?activity process:isAllocatedTo ?allocated_entity .
+        }
+    }
+}
+ORDER BY ?process ?activity

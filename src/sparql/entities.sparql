@@ -1,0 +1,14 @@
+PREFIX base: <https://fireforce6.github.io/sierra/base#>
+PREFIX entity: <https://fireforce6.github.io/sierra/entity#>
+PREFIX capability: <https://fireforce6.github.io/sierra/capability#>
+
+SELECT DISTINCT ?entity ?entity_desc ?capability
+WHERE {
+    ?entity a entity:Entity ;
+            base:description ?entity_desc .
+    
+    OPTIONAL {
+        ?entity entity:isInvolvedIn ?capability .
+    }
+}
+ORDER BY ?entity

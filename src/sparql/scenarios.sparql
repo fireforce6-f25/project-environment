@@ -1,0 +1,24 @@
+PREFIX base: <https://fireforce6.github.io/sierra/base#>
+PREFIX scenario: <https://fireforce6.github.io/sierra/scenario#>
+PREFIX entity: <https://fireforce6.github.io/sierra/entity#>
+
+SELECT DISTINCT ?scenario ?scenario_desc ?lifeline ?lifeline_desc ?represented_entity ?timepoint ?timepoint_desc
+WHERE {
+    ?scenario a scenario:Scenario ;
+              base:description ?scenario_desc .
+    
+    OPTIONAL {
+        ?lifeline scenario:lifelineOf ?scenario ;
+                  base:description ?lifeline_desc .
+        
+        OPTIONAL {
+            ?lifeline scenario:represents ?represented_entity .
+        }
+        
+        OPTIONAL {
+            ?timepoint scenario:occursOn ?lifeline ;
+                       base:description ?timepoint_desc .
+        }
+    }
+}
+ORDER BY ?scenario ?lifeline ?timepoint
