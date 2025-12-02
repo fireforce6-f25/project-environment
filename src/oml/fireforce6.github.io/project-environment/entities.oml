@@ -1,0 +1,79 @@
+@dc:title "Dashboard Entities"
+@dc:description "Describes the entities involved in the Project Management Dashboard system."
+description <https://fireforce6.github.io/project-environment/entities#> as entities {
+
+	uses <http://purl.org/dc/elements/1.1/> as dc
+	uses <https://fireforce6.github.io/sierra/base#> as base
+	uses <https://fireforce6.github.io/sierra/entity#> as ^entity
+	extends <https://fireforce6.github.io/project-environment/capabilities#> as capabilities
+
+	// Entity: GitHub Organization
+	instance github-organization : entity:Entity [
+		base:description "The GitHub organization containing all subproject repositories."
+	]
+
+	// Entity: GitHub App
+	instance github-app : entity:Entity [
+		base:description "The GitHub App that provides authorization and API access to repositories."
+	]
+
+	// Entity: Dashboard
+	instance dashboard : entity:Entity [
+		base:description "The web dashboard that displays the dependency graph and version information."
+	]
+
+	// Entity: Project Environment Repository
+	instance project-environment : entity:Entity [
+		base:description "The project-environment repository - the main dashboard system repository."
+	]
+
+	// Entity: Fire Warden Repository
+	instance fire-warden : entity:Entity [
+		base:description "The fire-warden repository containing dependency specification files and version information."
+	]
+
+	// Entity: Mission Control Repository
+	instance mission-control : entity:Entity [
+		base:description "The mission-control repository containing dependency specification files and version information."
+	]
+
+	// Entity: Modeling Environment Repository
+	instance modeling-environment : entity:Entity [
+		base:description "The modeling-environment repository containing dependency specification files and version information."
+	]
+
+	// Entity: Copilot Environment Repository
+	instance copilot-environment : entity:Entity [
+		base:description "The copilot-environment repository containing dependency specification files and version information."
+	]
+
+	// Entity: Fire Cloud Repository
+	instance fire-cloud : entity:Entity [
+		base:description "The fire-cloud repository containing dependency specification files and version information."
+	]
+
+	// Capability-Entity relationships (which entities are involved in which capabilities)
+	
+	// C1: Authorization involves GitHub App and Dashboard
+	ref instance capabilities:c1-authorization [
+		entity:involves github-app
+		entity:involves dashboard
+	]
+
+	// C2: Fetch Capability involves GitHub App, Dashboard, and all Subproject Repos
+	ref instance capabilities:c2-fetch-capability [
+		entity:involves github-app
+		entity:involves dashboard
+		entity:involves fire-warden
+		entity:involves mission-control
+		entity:involves modeling-environment
+		entity:involves copilot-environment
+		entity:involves fire-cloud
+	]
+
+	// C3: Dashboard Display involves Dashboard
+	ref instance capabilities:c3-dashboard-display [
+		entity:involves dashboard
+	]
+
+}

@@ -1,0 +1,239 @@
+@dc:title "Dashboard Scenarios"
+@dc:description "Describes the scenarios for the Project Management Dashboard system."
+description <https://fireforce6.github.io/project-environment/scenarios#> as scenarios {
+
+	uses <http://purl.org/dc/elements/1.1/> as dc
+	uses <https://fireforce6.github.io/sierra/base#> as base
+	uses <https://fireforce6.github.io/sierra/scenario#> as scenario
+	uses <https://fireforce6.github.io/sierra/state#> as state
+	extends <https://fireforce6.github.io/project-environment/entities#> as entities
+	extends <https://fireforce6.github.io/project-environment/capabilities#> as capabilities
+
+	// ========================================
+	// SCENARIO 1: Acyclic Graph State
+	// ========================================
+	// This scenario represents when the dependency graph has no cycles
+	
+	instance s1-acyclic-graph : scenario:Scenario [
+		base:description "Scenario where the dashboard displays an acyclic dependency graph."
+	]
+
+	// Lifelines for entities involved
+	instance s1-dashboard-lifeline : scenario:Lifeline [
+		base:description "Dashboard lifeline in acyclic graph scenario."
+		scenario:represents entities:dashboard
+		scenario:lifelineOf s1-acyclic-graph
+	]
+
+	instance s1-fire-warden-lifeline : scenario:Lifeline [
+		base:description "Fire-warden repository lifeline in acyclic graph scenario."
+		scenario:represents entities:fire-warden
+		scenario:lifelineOf s1-acyclic-graph
+	]
+
+	instance s1-mission-control-lifeline : scenario:Lifeline [
+		base:description "Mission-control repository lifeline in acyclic graph scenario."
+		scenario:represents entities:mission-control
+		scenario:lifelineOf s1-acyclic-graph
+	]
+
+	// Time points
+	instance s1-t1 : scenario:TimePoint [
+		base:description "Dashboard fetches dependencies from fire-warden."
+		scenario:occursOn s1-dashboard-lifeline
+	]
+
+	instance s1-t2 : scenario:TimePoint [
+		base:description "Dashboard fetches dependencies from mission-control."
+		scenario:occursOn s1-dashboard-lifeline
+		scenario:after s1-t1
+	]
+
+	instance s1-t3 : scenario:TimePoint [
+		base:description "Dashboard displays acyclic graph."
+		scenario:occursOn s1-dashboard-lifeline
+		scenario:after s1-t2
+	]
+
+	// ========================================
+	// SCENARIO 2: Cyclic Graph State
+	// ========================================
+	// This scenario represents when the dependency graph has cycles
+	
+	instance s2-cyclic-graph : scenario:Scenario [
+		base:description "Scenario where the dashboard detects and displays a cyclic dependency graph."
+	]
+
+	// Lifelines for entities involved
+	instance s2-dashboard-lifeline : scenario:Lifeline [
+		base:description "Dashboard lifeline in cyclic graph scenario."
+		scenario:represents entities:dashboard
+		scenario:lifelineOf s2-cyclic-graph
+	]
+
+	instance s2-fire-warden-lifeline : scenario:Lifeline [
+		base:description "Fire-warden repository lifeline in cyclic graph scenario."
+		scenario:represents entities:fire-warden
+		scenario:lifelineOf s2-cyclic-graph
+	]
+
+	instance s2-mission-control-lifeline : scenario:Lifeline [
+		base:description "Mission-control repository lifeline in cyclic graph scenario."
+		scenario:represents entities:mission-control
+		scenario:lifelineOf s2-cyclic-graph
+	]
+
+	// Time points
+	instance s2-t1 : scenario:TimePoint [
+		base:description "Dashboard fetches dependencies from fire-warden."
+		scenario:occursOn s2-dashboard-lifeline
+	]
+
+	instance s2-t2 : scenario:TimePoint [
+		base:description "Dashboard fetches dependencies from mission-control."
+		scenario:occursOn s2-dashboard-lifeline
+		scenario:after s2-t1
+	]
+
+	instance s2-t3 : scenario:TimePoint [
+		base:description "Dashboard detects cycle and displays warning."
+		scenario:occursOn s2-dashboard-lifeline
+		scenario:after s2-t2
+	]
+
+	// ========================================
+	// SCENARIO 3: Data Exists with Read Access
+	// ========================================
+	
+	instance s3-data-with-access : scenario:Scenario [
+		base:description "Scenario where dependency data exists and GitHub App has read access."
+	]
+
+	// Lifelines
+	instance s3-github-app-lifeline : scenario:Lifeline [
+		base:description "GitHub App lifeline in data with access scenario."
+		scenario:represents entities:github-app
+		scenario:lifelineOf s3-data-with-access
+	]
+
+	instance s3-repo-lifeline : scenario:Lifeline [
+		base:description "Repository lifeline in data with access scenario."
+		scenario:represents entities:fire-warden
+		scenario:lifelineOf s3-data-with-access
+	]
+
+	instance s3-dashboard-lifeline : scenario:Lifeline [
+		base:description "Dashboard lifeline in data with access scenario."
+		scenario:represents entities:dashboard
+		scenario:lifelineOf s3-data-with-access
+	]
+
+	// Time points
+	instance s3-t1 : scenario:TimePoint [
+		base:description "GitHub App requests data from repository."
+		scenario:occursOn s3-github-app-lifeline
+	]
+
+	instance s3-t2 : scenario:TimePoint [
+		base:description "Repository returns dependency data."
+		scenario:occursOn s3-repo-lifeline
+		scenario:after s3-t1
+	]
+
+	instance s3-t3 : scenario:TimePoint [
+		base:description "Dashboard successfully displays data."
+		scenario:occursOn s3-dashboard-lifeline
+		scenario:after s3-t2
+	]
+
+	// ========================================
+	// SCENARIO 4: Data Exists, No Read Access
+	// ========================================
+	
+	instance s4-data-no-access : scenario:Scenario [
+		base:description "Scenario where dependency data exists but GitHub App lacks read access."
+	]
+
+	// Lifelines
+	instance s4-github-app-lifeline : scenario:Lifeline [
+		base:description "GitHub App lifeline in no access scenario."
+		scenario:represents entities:github-app
+		scenario:lifelineOf s4-data-no-access
+	]
+
+	instance s4-repo-lifeline : scenario:Lifeline [
+		base:description "Repository lifeline in no access scenario."
+		scenario:represents entities:fire-warden
+		scenario:lifelineOf s4-data-no-access
+	]
+
+	instance s4-dashboard-lifeline : scenario:Lifeline [
+		base:description "Dashboard lifeline in no access scenario."
+		scenario:represents entities:dashboard
+		scenario:lifelineOf s4-data-no-access
+	]
+
+	// Time points
+	instance s4-t1 : scenario:TimePoint [
+		base:description "GitHub App attempts to request data from repository."
+		scenario:occursOn s4-github-app-lifeline
+	]
+
+	instance s4-t2 : scenario:TimePoint [
+		base:description "Repository denies access."
+		scenario:occursOn s4-repo-lifeline
+		scenario:after s4-t1
+	]
+
+	instance s4-t3 : scenario:TimePoint [
+		base:description "Dashboard displays error message about access denial."
+		scenario:occursOn s4-dashboard-lifeline
+		scenario:after s4-t2
+	]
+
+	// ========================================
+	// SCENARIO 5: No Data Exists
+	// ========================================
+	
+	instance s5-no-data : scenario:Scenario [
+		base:description "Scenario where no dependency specification files exist in the repository."
+	]
+
+	// Lifelines
+	instance s5-github-app-lifeline : scenario:Lifeline [
+		base:description "GitHub App lifeline in no data scenario."
+		scenario:represents entities:github-app
+		scenario:lifelineOf s5-no-data
+	]
+
+	instance s5-repo-lifeline : scenario:Lifeline [
+		base:description "Repository lifeline in no data scenario."
+		scenario:represents entities:fire-warden
+		scenario:lifelineOf s5-no-data
+	]
+
+	instance s5-dashboard-lifeline : scenario:Lifeline [
+		base:description "Dashboard lifeline in no data scenario."
+		scenario:represents entities:dashboard
+		scenario:lifelineOf s5-no-data
+	]
+
+	// Time points
+	instance s5-t1 : scenario:TimePoint [
+		base:description "GitHub App requests dependency data from repository."
+		scenario:occursOn s5-github-app-lifeline
+	]
+
+	instance s5-t2 : scenario:TimePoint [
+		base:description "Repository returns empty result (no dependency files found)."
+		scenario:occursOn s5-repo-lifeline
+		scenario:after s5-t1
+	]
+
+	instance s5-t3 : scenario:TimePoint [
+		base:description "Dashboard displays message indicating no dependencies found."
+		scenario:occursOn s5-dashboard-lifeline
+		scenario:after s5-t2
+	]
+
+}

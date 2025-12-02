@@ -1,0 +1,508 @@
+@dc:title "Dashboard Processes"
+@dc:description "Describes the processes, activities, and data flows for the Project Management Dashboard system."
+description <https://fireforce6.github.io/project-environment/processes#> as processes {
+
+	uses <http://purl.org/dc/elements/1.1/> as dc
+	uses <https://fireforce6.github.io/sierra/base#> as base
+	uses <https://fireforce6.github.io/sierra/process#> as ^process
+	uses <https://fireforce6.github.io/sierra/entity#> as ^entity
+	extends <https://fireforce6.github.io/project-environment/capabilities#> as capabilities
+	extends <https://fireforce6.github.io/project-environment/entities#> as entities
+
+	// ========================================
+	// PROCESS 1: Get GitHub App Installation Token
+	// ========================================
+	
+	instance p1-get-installation-token : process:Process [
+		base:description "Process to obtain GitHub App installation token for API access."
+		process:describes capabilities:c1-authorization
+	]
+
+	// Activities for P1
+	instance a1-request-token : process:Activity [
+		base:description "Dashboard requests installation token from GitHub App."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a2-authenticate-app : process:Activity [
+		base:description "GitHub App authenticates and generates installation token."
+		process:isAllocatedTo entities:github-app
+	]
+
+	instance a3-receive-token : process:Activity [
+		base:description "Dashboard receives and stores the installation token."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Data items for P1
+	instance d1-token-request : base:Data [
+		base:description "Installation token request payload."
+	]
+
+	instance d2-installation-token : base:Data [
+		base:description "GitHub App installation token for API access."
+	]
+
+	// Data flows for P1
+	relation instance df1-request-to-auth : process:DataFlow [
+		from a1-request-token
+		to a2-authenticate-app
+		base:description "Token request flows from dashboard to GitHub App."
+		process:carries d1-token-request
+		process:isIncludedIn p1-get-installation-token
+	]
+
+	relation instance df2-token-to-dashboard : process:DataFlow [
+		from a2-authenticate-app
+		to a3-receive-token
+		base:description "Installation token flows from GitHub App to dashboard."
+		process:carries d2-installation-token
+		process:isIncludedIn p1-get-installation-token
+	]
+
+	// ========================================
+	// PROCESS 2: Fetch Dependencies and Versions
+	// ========================================
+	
+	instance p2-fetch-dependencies : process:Process [
+		base:description "Process to fetch current version and dependencies from all subproject repositories."
+		process:describes capabilities:c2-fetch-capability
+	]
+
+	// Activities for P2
+	instance a4-use-token : process:Activity [
+		base:description "Dashboard uses installation token to authenticate API requests."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Fire Warden Activities
+	instance a5-api-request-fire-warden : process:Activity [
+		base:description "GitHub App interacts with fire-warden repository via API."
+		process:isAllocatedTo entities:github-app
+	]
+
+	instance a6-read-spec-fire-warden : process:Activity [
+		base:description "Read dependency specification file from fire-warden."
+		process:isAllocatedTo entities:fire-warden
+	]
+
+	instance a7-fetch-version-fire-warden : process:Activity [
+		base:description "Fetch current version from fire-warden."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a8-fetch-dependencies-fire-warden : process:Activity [
+		base:description "Fetch dependencies from fire-warden."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Mission Control Activities
+	instance a9-api-request-mission-control : process:Activity [
+		base:description "GitHub App interacts with mission-control repository via API."
+		process:isAllocatedTo entities:github-app
+	]
+
+	instance a10-read-spec-mission-control : process:Activity [
+		base:description "Read dependency specification file from mission-control."
+		process:isAllocatedTo entities:mission-control
+	]
+
+	instance a11-fetch-version-mission-control : process:Activity [
+		base:description "Fetch current version from mission-control."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a12-fetch-dependencies-mission-control : process:Activity [
+		base:description "Fetch dependencies from mission-control."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Modeling Environment Activities
+	instance a13-api-request-modeling-environment : process:Activity [
+		base:description "GitHub App interacts with modeling-environment repository via API."
+		process:isAllocatedTo entities:github-app
+	]
+
+	instance a14-read-spec-modeling-environment : process:Activity [
+		base:description "Read dependency specification file from modeling-environment."
+		process:isAllocatedTo entities:modeling-environment
+	]
+
+	instance a15-fetch-version-modeling-environment : process:Activity [
+		base:description "Fetch current version from modeling-environment."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a16-fetch-dependencies-modeling-environment : process:Activity [
+		base:description "Fetch dependencies from modeling-environment."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Copilot Environment Activities
+	instance a17-api-request-copilot-environment : process:Activity [
+		base:description "GitHub App interacts with copilot-environment repository via API."
+		process:isAllocatedTo entities:github-app
+	]
+
+	instance a18-read-spec-copilot-environment : process:Activity [
+		base:description "Read dependency specification file from copilot-environment."
+		process:isAllocatedTo entities:copilot-environment
+	]
+
+	instance a19-fetch-version-copilot-environment : process:Activity [
+		base:description "Fetch current version from copilot-environment."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a20-fetch-dependencies-copilot-environment : process:Activity [
+		base:description "Fetch dependencies from copilot-environment."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Fire Cloud Activities
+	instance a21-api-request-fire-cloud : process:Activity [
+		base:description "GitHub App interacts with fire-cloud repository via API."
+		process:isAllocatedTo entities:github-app
+	]
+
+	instance a22-read-spec-fire-cloud : process:Activity [
+		base:description "Read dependency specification file from fire-cloud."
+		process:isAllocatedTo entities:fire-cloud
+	]
+
+	instance a23-fetch-version-fire-cloud : process:Activity [
+		base:description "Fetch current version from fire-cloud."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a24-fetch-dependencies-fire-cloud : process:Activity [
+		base:description "Fetch dependencies from fire-cloud."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Data items for P2
+	instance d3-api-request : base:Data [
+		base:description "API request to repository."
+	]
+
+	instance d4-spec-fire-warden : base:Data [
+		base:description "Dependency specification file from fire-warden (e.g., package.json, requirements.txt)."
+	]
+
+	instance d5-spec-mission-control : base:Data [
+		base:description "Dependency specification file from mission-control."
+	]
+
+	instance d6-spec-modeling-environment : base:Data [
+		base:description "Dependency specification file from modeling-environment."
+	]
+
+	instance d7-spec-copilot-environment : base:Data [
+		base:description "Dependency specification file from copilot-environment."
+	]
+
+	instance d8-spec-fire-cloud : base:Data [
+		base:description "Dependency specification file from fire-cloud."
+	]
+
+	instance d9-version-fire-warden : base:Data [
+		base:description "Current version of fire-warden."
+	]
+
+	instance d10-version-mission-control : base:Data [
+		base:description "Current version of mission-control."
+	]
+
+	instance d11-version-modeling-environment : base:Data [
+		base:description "Current version of modeling-environment."
+	]
+
+	instance d12-version-copilot-environment : base:Data [
+		base:description "Current version of copilot-environment."
+	]
+
+	instance d13-version-fire-cloud : base:Data [
+		base:description "Current version of fire-cloud."
+	]
+
+	instance d14-dependencies-fire-warden : base:Data [
+		base:description "Parsed dependencies from fire-warden."
+	]
+
+	instance d15-dependencies-mission-control : base:Data [
+		base:description "Parsed dependencies from mission-control."
+	]
+
+	instance d16-dependencies-modeling-environment : base:Data [
+		base:description "Parsed dependencies from modeling-environment."
+	]
+
+	instance d17-dependencies-copilot-environment : base:Data [
+		base:description "Parsed dependencies from copilot-environment."
+	]
+
+	instance d18-dependencies-fire-cloud : base:Data [
+		base:description "Parsed dependencies from fire-cloud."
+	]
+
+	// Data flows for P2 - Fire Warden
+	relation instance df3-token-to-api-fire-warden : process:DataFlow [
+		from a4-use-token
+		to a5-api-request-fire-warden
+		base:description "Installation token used for API authentication."
+		process:carries d2-installation-token
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df4-api-to-read-fire-warden : process:DataFlow [
+		from a5-api-request-fire-warden
+		to a6-read-spec-fire-warden
+		base:description "API request to read fire-warden."
+		process:carries d3-api-request
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df5-spec-fire-warden-return : process:DataFlow [
+		from a6-read-spec-fire-warden
+		to a7-fetch-version-fire-warden
+		base:description "Specification file from fire-warden returned."
+		process:carries d4-spec-fire-warden
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df6-version-fire-warden-parsed : process:DataFlow [
+		from a7-fetch-version-fire-warden
+		to a8-fetch-dependencies-fire-warden
+		base:description "Version information parsed from fire-warden."
+		process:carries d9-version-fire-warden
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	// Data flows for P2 - Mission Control
+	relation instance df7-token-to-api-mission-control : process:DataFlow [
+		from a4-use-token
+		to a9-api-request-mission-control
+		base:description "Installation token used for API authentication."
+		process:carries d2-installation-token
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df8-api-to-read-mission-control : process:DataFlow [
+		from a9-api-request-mission-control
+		to a10-read-spec-mission-control
+		base:description "API request to read mission-control."
+		process:carries d3-api-request
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df9-spec-mission-control-return : process:DataFlow [
+		from a10-read-spec-mission-control
+		to a11-fetch-version-mission-control
+		base:description "Specification file from mission-control returned."
+		process:carries d5-spec-mission-control
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df10-version-mission-control-parsed : process:DataFlow [
+		from a11-fetch-version-mission-control
+		to a12-fetch-dependencies-mission-control
+		base:description "Version information parsed from mission-control."
+		process:carries d10-version-mission-control
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	// Data flows for P2 - Modeling Environment
+	relation instance df11-token-to-api-modeling-environment : process:DataFlow [
+		from a4-use-token
+		to a13-api-request-modeling-environment
+		base:description "Installation token used for API authentication."
+		process:carries d2-installation-token
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df12-api-to-read-modeling-environment : process:DataFlow [
+		from a13-api-request-modeling-environment
+		to a14-read-spec-modeling-environment
+		base:description "API request to read modeling-environment."
+		process:carries d3-api-request
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df13-spec-modeling-environment-return : process:DataFlow [
+		from a14-read-spec-modeling-environment
+		to a15-fetch-version-modeling-environment
+		base:description "Specification file from modeling-environment returned."
+		process:carries d6-spec-modeling-environment
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df14-version-modeling-environment-parsed : process:DataFlow [
+		from a15-fetch-version-modeling-environment
+		to a16-fetch-dependencies-modeling-environment
+		base:description "Version information parsed from modeling-environment."
+		process:carries d11-version-modeling-environment
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	// Data flows for P2 - Copilot Environment
+	relation instance df15-token-to-api-copilot-environment : process:DataFlow [
+		from a4-use-token
+		to a17-api-request-copilot-environment
+		base:description "Installation token used for API authentication."
+		process:carries d2-installation-token
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df16-api-to-read-copilot-environment : process:DataFlow [
+		from a17-api-request-copilot-environment
+		to a18-read-spec-copilot-environment
+		base:description "API request to read copilot-environment."
+		process:carries d3-api-request
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df17-spec-copilot-environment-return : process:DataFlow [
+		from a18-read-spec-copilot-environment
+		to a19-fetch-version-copilot-environment
+		base:description "Specification file from copilot-environment returned."
+		process:carries d7-spec-copilot-environment
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df18-version-copilot-environment-parsed : process:DataFlow [
+		from a19-fetch-version-copilot-environment
+		to a20-fetch-dependencies-copilot-environment
+		base:description "Version information parsed from copilot-environment."
+		process:carries d12-version-copilot-environment
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	// Data flows for P2 - Fire Cloud
+	relation instance df19-token-to-api-fire-cloud : process:DataFlow [
+		from a4-use-token
+		to a21-api-request-fire-cloud
+		base:description "Installation token used for API authentication."
+		process:carries d2-installation-token
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df20-api-to-read-fire-cloud : process:DataFlow [
+		from a21-api-request-fire-cloud
+		to a22-read-spec-fire-cloud
+		base:description "API request to read fire-cloud."
+		process:carries d3-api-request
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df21-spec-fire-cloud-return : process:DataFlow [
+		from a22-read-spec-fire-cloud
+		to a23-fetch-version-fire-cloud
+		base:description "Specification file from fire-cloud returned."
+		process:carries d8-spec-fire-cloud
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	relation instance df22-version-fire-cloud-parsed : process:DataFlow [
+		from a23-fetch-version-fire-cloud
+		to a24-fetch-dependencies-fire-cloud
+		base:description "Version information parsed from fire-cloud."
+		process:carries d13-version-fire-cloud
+		process:isIncludedIn p2-fetch-dependencies
+	]
+
+	// ========================================
+	// PROCESS 3: Display Dashboard
+	// ========================================
+	
+	instance p3-display-dashboard : process:Process [
+		base:description "Process to display fetched dependencies and versions in a graph format."
+		process:describes capabilities:c3-dashboard-display
+	]
+
+	// Activities for P3
+	instance a25-aggregate-data : process:Activity [
+		base:description "Aggregate all fetched version and dependency data."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a26-build-graph : process:Activity [
+		base:description "Build dependency graph from aggregated data."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	instance a27-render-visualization : process:Activity [
+		base:description "Render the dependency graph as a visual display."
+		process:isAllocatedTo entities:dashboard
+	]
+
+	// Data items for P3
+	instance d19-aggregated-data : base:Data [
+		base:description "All versions and dependencies aggregated together."
+	]
+
+	instance d20-dependency-graph : base:Data [
+		base:description "Structured dependency graph data."
+	]
+
+	instance d21-visual-graph : base:Data [
+		base:description "Visual representation of the dependency graph."
+	]
+
+	// Data flows for P3 - Aggregation from all repos
+	relation instance df23-deps-fire-warden-to-aggregate : process:DataFlow [
+		from a8-fetch-dependencies-fire-warden
+		to a25-aggregate-data
+		base:description "Dependencies from fire-warden flow to aggregation."
+		process:carries d14-dependencies-fire-warden
+		process:isIncludedIn p3-display-dashboard
+	]
+
+	relation instance df24-deps-mission-control-to-aggregate : process:DataFlow [
+		from a12-fetch-dependencies-mission-control
+		to a25-aggregate-data
+		base:description "Dependencies from mission-control flow to aggregation."
+		process:carries d15-dependencies-mission-control
+		process:isIncludedIn p3-display-dashboard
+	]
+
+	relation instance df25-deps-modeling-environment-to-aggregate : process:DataFlow [
+		from a16-fetch-dependencies-modeling-environment
+		to a25-aggregate-data
+		base:description "Dependencies from modeling-environment flow to aggregation."
+		process:carries d16-dependencies-modeling-environment
+		process:isIncludedIn p3-display-dashboard
+	]
+
+	relation instance df26-deps-copilot-environment-to-aggregate : process:DataFlow [
+		from a20-fetch-dependencies-copilot-environment
+		to a25-aggregate-data
+		base:description "Dependencies from copilot-environment flow to aggregation."
+		process:carries d17-dependencies-copilot-environment
+		process:isIncludedIn p3-display-dashboard
+	]
+
+	relation instance df27-deps-fire-cloud-to-aggregate : process:DataFlow [
+		from a24-fetch-dependencies-fire-cloud
+		to a25-aggregate-data
+		base:description "Dependencies from fire-cloud flow to aggregation."
+		process:carries d18-dependencies-fire-cloud
+		process:isIncludedIn p3-display-dashboard
+	]
+
+	relation instance df28-aggregate-to-graph : process:DataFlow [
+		from a25-aggregate-data
+		to a26-build-graph
+		base:description "Aggregated data flows to graph builder."
+		process:carries d19-aggregated-data
+		process:isIncludedIn p3-display-dashboard
+	]
+
+	relation instance df29-graph-to-render : process:DataFlow [
+		from a26-build-graph
+		to a27-render-visualization
+		base:description "Dependency graph flows to visualization renderer."
+		process:carries d20-dependency-graph
+		process:isIncludedIn p3-display-dashboard
+	]
+
+}

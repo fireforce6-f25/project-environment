@@ -11,5 +11,8 @@ description bundle <https://fireforce6.github.io/project-environment/bundle#> as
      includes <https://fireforce6.github.io/project-environment/requirements#>
      includes <https://fireforce6.github.io/project-environment/missions#>
      includes <https://fireforce6.github.io/project-environment/capabilities#>
+     includes <https://fireforce6.github.io/project-environment/entities#>
+     includes <https://fireforce6.github.io/project-environment/processes#>
+     includes <https://fireforce6.github.io/project-environment/scenarios#>
 
 }
