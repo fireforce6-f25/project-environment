@@ -1,7 +1,10 @@
 ipykernel
+notebook
 nbconvert
 pandas
 plantuml
 igraph
 cairocffi
-jupyter
+matplotlib
+seaborn
+networkx

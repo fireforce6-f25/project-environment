@@ -16,6 +16,12 @@ def dataframe(fileName):
     df = df.map(lambda x: x["value"] if not pd.isna(x) else x)
     return df
 
+def extract_id(uri):
+    """Extract the ID from a URI (the part after the last # or /)"""
+    if pd.isna(uri):
+        return uri
+    return uri.split('#')[-1].split('/')[-1]
+
 def todict(df, column1, column2):
     result = df.set_index(column1)[column2].to_dict()
     return {key: value for (key, value) in result.items() if not pd.isna(value)}
@@ -203,7 +209,7 @@ function drawTree(data, containerID, root_name, unique=true, _width=960, _height
 	    const transition = svg.transition()
 	        .duration(duration);
 	
-	 	// Update the nodesâ€¦
+	 	// Update the nodesÃ¢â‚¬Â¦
 	  	var node = svg.selectAll("g.node")
 		  .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
@@ -249,7 +255,7 @@ function drawTree(data, containerID, root_name, unique=true, _width=960, _height
 	  	nodeExit.select("text")
 		  .style("fill-opacity", 1e-6);
 	
-	    // Update the linksâ€¦
+	    // Update the linksÃ¢â‚¬Â¦
 	    const link = gLink.selectAll("path")
 	      .data(links, d => d.target.id);
 	
